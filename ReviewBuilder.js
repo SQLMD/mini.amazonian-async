@@ -43,21 +43,10 @@ class ReviewBuilder {
   }
 
   buildReviewsPromises() {
-    const readFileAsync = (filepath) => {
-      return new Promise((resolve) => {
-        fs.readFile(filepath, "utf-8", (err, data) => {
-          if (err) {
-            return;
-          }
-          resolve(JSON.parse(data));
-        });
-      });
-    };
-
     return Promise.all([
-      readFileAsync("./data/products.json"),
-      readFileAsync("./data/users.json"),
-      readFileAsync("./data/reviews.json"),
+      this.readFileAsync("./data/products.json"),
+      this.readFileAsync("./data/users.json"),
+      this.readFileAsync("./data/reviews.json"),
     ]).then((fileData) => {
       const products = fileData[0];
       const users = fileData[1];
@@ -71,21 +60,10 @@ class ReviewBuilder {
   }
 
   buildReviewsAsyncAwait() {
-    const readFileAsync = (filepath) => {
-      return new Promise((resolve) => {
-        fs.readFile(filepath, "utf-8", (err, data) => {
-          if (err) {
-            return;
-          }
-          resolve(JSON.parse(data));
-        });
-      });
-    };
-
     const annotateReviews = async () => {
-      const products = await readFileAsync("./data/products.json");
-      const users = await readFileAsync("./data/users.json");
-      const reviews = await readFileAsync("./data/reviews.json");
+      const products = await this.readFileAsync("./data/products.json");
+      const users = await this.readFileAsync("./data/users.json");
+      const reviews = await this.readFileAsync("./data/reviews.json");
 
       return this.helperForReviews(products, users, reviews);
     };
@@ -112,6 +90,17 @@ class ReviewBuilder {
         rating: review.rating,
       };
       return productObj;
+    });
+  }
+
+  readFileAsync(filepath) {
+    return new Promise((resolve) => {
+      fs.readFile(filepath, "utf-8", (err, data) => {
+        if (err) {
+          return;
+        }
+        resolve(JSON.parse(data));
+      });
     });
   }
 }
