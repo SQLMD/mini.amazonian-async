@@ -63,26 +63,8 @@ class ReviewBuilder {
       const users = fileData[1];
       const reviews = fileData[2];
 
-      const productsMap = {};
-      products.forEach((product) => {
-        productsMap[product.id] = product.name;
-      });
-
-      const usersMap = {};
-      users.forEach((user) => {
-        usersMap[user.id] = user.username;
-      });
-
       return new Promise((resolve) => {
-        const result = reviews.map((review) => {
-          const productObj = {
-            productName: productsMap[review.productId],
-            username: usersMap[review.userId],
-            text: review.text,
-            rating: review.rating,
-          };
-          return productObj;
-        });
+        const result = this.helperForReviews(products, users, reviews);
         resolve(result);
       });
     });
