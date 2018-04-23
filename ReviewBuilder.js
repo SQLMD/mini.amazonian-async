@@ -31,24 +31,11 @@ class ReviewBuilder {
             return;
           }
           reviewsJSON = JSON.parse(reviews);
-          const productsMap = {};
-          productsJSON.forEach((product) => {
-            productsMap[product.id] = product.name;
-          });
-
-          const usersMap = {};
-          usersJSON.forEach((user) => {
-            usersMap[user.id] = user.username;
-          });
-          const result = reviewsJSON.map((review) => {
-            const productObj = {
-              productName: productsMap[review.productId],
-              username: usersMap[review.userId],
-              text: review.text,
-              rating: review.rating,
-            };
-            return productObj;
-          });
+          const result = this.helperForReviews(
+            productsJSON,
+            usersJSON,
+            reviewsJSON
+          );
           onFinished(result);
         });
       });
